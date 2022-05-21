@@ -20,6 +20,7 @@
 		8960E4611E72BD23004FCC6E /* JLWebImageManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 8960E45C1E72BD23004FCC6E /* JLWebImageManager.m */; };
 		8960E4621E72BD23004FCC6E /* JLWebImageOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 8960E45E1E72BD23004FCC6E /* JLWebImageOperation.m */; };
 		8960E4631E72BD23004FCC6E /* UIImageView+JLWebCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 8960E4601E72BD23004FCC6E /* UIImageView+JLWebCache.m */; };
+		897C0D762838910A0059CBB1 /* NSString+Extension.m in Sources */ = {isa = PBXBuildFile; fileRef = 897C0D752838910A0059CBB1 /* NSString+Extension.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -66,6 +67,8 @@
 		8960E45E1E72BD23004FCC6E /* JLWebImageOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JLWebImageOperation.m; sourceTree = "<group>"; };
 		8960E45F1E72BD23004FCC6E /* UIImageView+JLWebCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImageView+JLWebCache.h"; sourceTree = "<group>"; };
 		8960E4601E72BD23004FCC6E /* UIImageView+JLWebCache.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImageView+JLWebCache.m"; sourceTree = "<group>"; };
+		897C0D742838910A0059CBB1 /* NSString+Extension.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSString+Extension.h"; sourceTree = "<group>"; };
+		897C0D752838910A0059CBB1 /* NSString+Extension.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "NSString+Extension.m"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -164,6 +167,8 @@
 			children = (
 				8960E45F1E72BD23004FCC6E /* UIImageView+JLWebCache.h */,
 				8960E4601E72BD23004FCC6E /* UIImageView+JLWebCache.m */,
+				897C0D742838910A0059CBB1 /* NSString+Extension.h */,
+				897C0D752838910A0059CBB1 /* NSString+Extension.m */,
 				8960E45B1E72BD23004FCC6E /* JLWebImageManager.h */,
 				8960E45C1E72BD23004FCC6E /* JLWebImageManager.m */,
 				8960E45D1E72BD23004FCC6E /* JLWebImageOperation.h */,
@@ -259,6 +264,7 @@
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
 			knownRegions = (
+				English,
 				en,
 				Base,
 			);
@@ -314,6 +320,7 @@
 				8960E4621E72BD23004FCC6E /* JLWebImageOperation.m in Sources */,
 				8960E4631E72BD23004FCC6E /* UIImageView+JLWebCache.m in Sources */,
 				8960E4161E72BB2A004FCC6E /* main.m in Sources */,
+				897C0D762838910A0059CBB1 /* NSString+Extension.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -535,6 +542,7 @@
 				8960E4401E72BB2A004FCC6E /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		8960E4411E72BB2A004FCC6E /* Build configuration list for PBXNativeTarget "JLWebImageTests" */ = {
 			isa = XCConfigurationList;
@@ -543,6 +551,7 @@
 				8960E4431E72BB2A004FCC6E /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		8960E4441E72BB2A004FCC6E /* Build configuration list for PBXNativeTarget "JLWebImageUITests" */ = {
 			isa = XCConfigurationList;
@@ -551,6 +560,7 @@
 				8960E4461E72BB2A004FCC6E /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

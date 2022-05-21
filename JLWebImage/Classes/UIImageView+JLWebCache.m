@@ -53,7 +53,7 @@ static char loadingURLKey;
     }else{//2.2 内存中没有图片
         
         //2.2.1 获得Library/Caches文件夹
-        NSString *cachesPath = [NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) firstObject];
+        NSString *cachesPath = [self getCachePath];
         
         //2.2.2 获得文件名
         NSString *filename = [url lastPathComponent];
@@ -97,7 +97,39 @@ static char loadingURLKey;
         }
         
     }
+}
+
+- (NSString *)getCachePath{
     
+    //文件管理者
+    NSFileManager *mgr = [NSFileManager defaultManager];
+    //2.2.1 获得Library/Caches文件夹
+    NSString *cachesPath = [NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) firstObject];
+    //2.2.3 计算出文件的全路径
+    NSString *JLImageFolderPath = [cachesPath stringByAppendingPathComponent:@"JLImage"];
+    //判断字符串是否为文件/文件夹
+     BOOL dir = NO;
+     BOOL exists = [mgr fileExistsAtPath:JLImageFolderPath isDirectory:&dir];
+    
+    if (exists == YES && dir == YES) {
+        
+        NSLog(@"文件夹已存在");
+        return JLImageFolderPath;
+        
+    }else{
+        
+        // 创建目录
+        BOOL res=[mgr createDirectoryAtPath:JLImageFolderPath withIntermediateDirectories:YES attributes:nil error:nil];
+        if (res) {
+            NSLog(@"文件夹创建成功,JLImageFolderPath = %@",JLImageFolderPath);
+            return JLImageFolderPath;
+        }else{
+            NSLog(@"文件夹创建失败");
+            return nil;
+        }
+    
+    }
     
 }
+
 @end
