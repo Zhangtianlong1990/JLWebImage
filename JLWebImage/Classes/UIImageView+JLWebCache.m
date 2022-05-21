@@ -32,19 +32,17 @@ static char loadingURLKey;
 }
 
 - (void)jl_setImageWithURL:(NSString *)url placeholderImage:(NSString *)placeholderImage{
-    
-    JLWebImageManager *manager = [JLWebImageManager sharedWebImageManager];
+    JLWebImageManager<JLWebImageOperation *> *manager = [JLWebImageManager sharedWebImageManager];
     
     // 1.0 如果此imageView正在下载图片就取消
     if (self.loadingURL) {
-        
-        NSOperation *operation = manager.operations[self.loadingURL];
+        NSOperation *operation = [manager getOperationCacheWithKey:self.loadingURL];
         [operation cancel];
         
     }
     
     // 2.0 先从内存缓存中取出图片
-    UIImage *image = manager.images[url];
+    UIImage *image = [manager getImageCacheWithKey:url];
     
     if (image) { //2.1 内存中有图片
         
@@ -68,12 +66,12 @@ static char loadingURLKey;
             
             UIImage *image = [UIImage imageWithData:data];
             self.image = image;
-            manager.images[url] = image;//存到字典中
+            [manager setupImageCache:image WithKey:url];
             
         }else { //2.2.4.2  下载图片
             
             self.image = [UIImage imageNamed:placeholderImage];
-            JLWebImageOperation *operation = manager.operations[url];
+            JLWebImageOperation *operation = [manager getOperationCacheWithKey:url];
             
             if (operation == nil) { // 这张图片暂时没有下载任务
                 
@@ -88,9 +86,9 @@ static char loadingURLKey;
                 operation.file = file;
                 
                 //c. 添加到队列中
-                [manager.queue addOperation:operation];
+                [manager addOperationToQueue:operation];
                 //d. 存放到字典中
-                manager.operations[url] = operation;
+                [manager setOperationCacheWithKey:operation withKey:url];
                 
             }
         
@@ -118,6 +116,7 @@ static char loadingURLKey;
         // 创建目录
         BOOL res=[mgr createDirectoryAtPath:JLImageFolderPath withIntermediateDirectories:YES attributes:nil error:nil];
         if (res) {
+            NSLog(@"文件夹创建成功,JLImageFolderPath = %@",JLImageFolderPath);
             return JLImageFolderPath;
         }else{
             NSLog(@"文件夹创建失败");

@@ -23,16 +23,15 @@
         
         // 2.0 数据加载失败或者被取消了
         if (data == nil || self.isCancelled) {
-            
             // 移除操作
-            [manager.operations removeObjectForKey:_url];
+            [manager removeOperationCacheWithKey:_url];
             return;
             
         }
         
         // 3.0 存到字典中
         UIImage *image = [UIImage imageWithData:data];
-        manager.images[_url] = image;
+        [manager setupImageCache:image WithKey:_url];
         
         // 4.0 回到主线程显示图片
         [[NSOperationQueue mainQueue] addOperationWithBlock:^{
@@ -43,7 +42,7 @@
         [data writeToFile:_file atomically:YES];
         
         // 6.0 移除操作
-        [manager.operations removeObjectForKey:_url];
+        [manager removeOperationCacheWithKey:_url];
         
     }
     

@@ -7,24 +7,17 @@
 //
 
 #import <Foundation/Foundation.h>
+#import <UIKit/UIKit.h>
 #import "JLSingleton.h"
 
-@interface JLWebImageManager : NSObject
-/**
- 内存缓存的图片
- */
-@property (nonatomic, strong) NSMutableDictionary *images;
-/**
- 所有的操作对象
- */
-@property (nonatomic, strong) NSMutableDictionary *operations;
-/**
- 队列对象
- */
-@property (nonatomic, strong) NSOperationQueue *queue;
-
+@interface JLWebImageManager<T: NSOperation *> : NSObject
 JLSingletonH(WebImageManager)
-
+- (void)setupImageCache:(UIImage *)aImage WithKey:(NSString *)aKey;
+- (UIImage *)getImageCacheWithKey:(NSString *)aKey;
+- (void)addOperationToQueue:(T)aOperation;
+- (void)setOperationCacheWithKey:(T)aOperation withKey:(NSString *)aKey;
+- (T)getOperationCacheWithKey:(NSString *)aKey;
+- (void)removeOperationCacheWithKey:(NSString *)aKey;
 /**
  清除图片缓存
  */
