@@ -112,16 +112,12 @@ static char loadingURLKey;
      BOOL exists = [mgr fileExistsAtPath:JLImageFolderPath isDirectory:&dir];
     
     if (exists == YES && dir == YES) {
-        
-        NSLog(@"文件夹已存在");
         return JLImageFolderPath;
-        
     }else{
         
         // 创建目录
         BOOL res=[mgr createDirectoryAtPath:JLImageFolderPath withIntermediateDirectories:YES attributes:nil error:nil];
         if (res) {
-            NSLog(@"文件夹创建成功,JLImageFolderPath = %@",JLImageFolderPath);
             return JLImageFolderPath;
         }else{
             NSLog(@"文件夹创建失败");
