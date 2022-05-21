@@ -61,7 +61,6 @@ JLSingletonM(WebImageManager)
 
 - (void)setupImageCache:(UIImage *)aImage WithKey:(NSString *)aKey{
     self.images[aKey] = aImage;
-    NSLog(@"setupImageCache - currentThread = %@",[NSThread currentThread]);
 }
 
 - (UIImage *)getImageCacheWithKey:(NSString *)aKey{
