@@ -21,7 +21,8 @@
  队列对象
  */
 @property (nonatomic, strong) NSOperationQueue *queue;
-
+@property(nonatomic, strong) dispatch_queue_t imageQueue;
+@property(nonatomic, strong) dispatch_queue_t operationQueue;
 @end
 
 @implementation JLWebImageManager
@@ -32,39 +33,29 @@ JLSingletonM(WebImageManager)
 {
     self = [super init];
     if (self) {
-        
+        _imageQueue = dispatch_queue_create("com.image.safequeue", DISPATCH_QUEUE_CONCURRENT);
+        _operationQueue = dispatch_queue_create("com.operation.safequeue", DISPATCH_QUEUE_CONCURRENT);
+        _images = [NSMutableDictionary dictionary];
+        _operations = [NSMutableDictionary dictionary];
+        _queue = [[NSOperationQueue alloc] init];
     }
     return self;
 }
 
-- (NSMutableDictionary *)images
-{
-    if (!_images) {
-        _images = [NSMutableDictionary dictionary];
-    }
-    return _images;
-}
-- (NSMutableDictionary *)operations
-{
-    if (!_operations) {
-        _operations = [NSMutableDictionary dictionary];
-    }
-    return _operations;
-}
-- (NSOperationQueue *)queue
-{
-    if (!_queue) {
-        _queue = [[NSOperationQueue alloc] init];
-    }
-    return _queue;
-}
-
 - (void)setupImageCache:(UIImage *)aImage WithKey:(NSString *)aKey{
-    self.images[aKey] = aImage;
+    if (!aKey) return;
+    dispatch_barrier_async(_imageQueue, ^{
+        self.images[aKey] = aImage;
+    });
 }
 
 - (UIImage *)getImageCacheWithKey:(NSString *)aKey{
-    return self.images[aKey];
+    __block UIImage *image = nil;
+    if (!aKey) return image;
+    dispatch_sync(_imageQueue, ^{
+        image = self.images[aKey];
+    });
+    return image;
 }
 
 - (void)addOperationToQueue:(NSOperation *)aOperation{
@@ -72,20 +63,33 @@ JLSingletonM(WebImageManager)
 }
 
 - (void)setOperationCacheWithKey:(NSOperation *)aOperation withKey:(NSString *)aKey{
-    self.operations[aKey] = aOperation;
+    if (!aKey) return;
+    dispatch_barrier_async(_operationQueue, ^{
+        self.operations[aKey] = aOperation;
+    });
 }
 
 - (NSOperation *)getOperationCacheWithKey:(NSString *)aKey{
-    return self.operations[aKey];
+    __block NSOperation *operation = nil;
+    if (!aKey) return operation;
+    dispatch_sync(_imageQueue, ^{
+        operation = self.operations[aKey];
+    });
+    return operation;
 }
 
 - (void)removeOperationCacheWithKey:(NSString *)aKey{
-    [self.operations removeObjectForKey:aKey];
+    if(!aKey) return;
+    dispatch_sync(_operationQueue, ^{
+        [self.operations removeObjectForKey:aKey];
+    });
 }
 
 
 - (void)clearMemories{
-    [self.images removeAllObjects];
+    dispatch_sync(_imageQueue, ^{
+        [self.images removeAllObjects];
+    });
 }
 
 @end
