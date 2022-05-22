@@ -104,15 +104,13 @@ JLSingletonM(WebImageManager)
 
 //进入后台方法
 - (void)didReceiveMemoryWarning {
-        NSLog(@"%@", NSStringFromSelector(_cmd));
     [self clearMemories];
     [self checkExpiredImageCache];
 }
 
     //每次后台进前台都会执行这个方法
 - (void)didEnterBackground {
-        NSLog(@"%@,getCachePath: %@", NSStringFromSelector(_cmd),[JLFileTool getCachePath]);
-    
+    [self checkExpiredImageCache];
 }
 
 - (void)checkExpiredImageCache{
@@ -121,13 +119,41 @@ JLSingletonM(WebImageManager)
             [self handleData:response];
         });
     }];
+    
 }
 
 - (void)handleData:(NSArray<JLImageDate *> *)response{
+    BOOL isDelete = NO;
     for (JLImageDate *date in response) {
-        if ([JLFileTool deleteFileWithUrl:date.url]) {
-            [[DataManager shareInstance] deleteWithID:date.url];
+        isDelete = [JLFileTool deleteFileWithUrl:date.url];
+        if (isDelete) {
+            //
+            isDelete = [[DataManager shareInstance] deleteWithID:date.url];
+            if (isDelete==NO) {
+                break;
+            }else{
+                isDelete = YES;
+            }
+        }else{
+            break;//删除一条失败就跳出循环，防止死循环，减少不了缓存就一直循环检测
         }
+    }
+    if (isDelete) {
+        //删除完数据检查总文件大小是否超过超出范围，超出的话就5条删除最旧的，直到达标为止
+        [self checkTotalSizeOfImage];
+    }
+}
+
+- (void)checkTotalSizeOfImage{
+    double totalFileSize = [JLFileTool countFileSizeWithPath:[JLFileTool getCachePath]]/(1024.0 * 1024.0);
+    if (totalFileSize > 50.0) {//大于50M就需要删除一些了
+        [[DataManager shareInstance] selectExpirationDataOrderByTimeWithLimit:5 response:^(NSArray<JLImageDate *> *response) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [self handleData:response];
+            });
+        }];
+    }else{
+        NSLog(@"达标了");
     }
 }
 

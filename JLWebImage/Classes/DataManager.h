@@ -15,6 +15,7 @@
 + (instancetype)shareInstance;
 - (void)insertDataWithKey:(NSString *)aKey timeInterval:(NSTimeInterval)timeInterval;
 - (void)selectExpirationData:(void(^)(NSArray<JLImageDate *> *))response;
-- (void)deleteWithID:(NSString *)ID;
+- (void)selectExpirationDataOrderByTimeWithLimit:(NSInteger)limit response:(void (^)(NSArray<JLImageDate *> *))response;
+- (BOOL)deleteWithID:(NSString *)ID;
 @end
 

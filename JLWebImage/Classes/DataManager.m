@@ -108,15 +108,38 @@
     
 }
 
-- (void)deleteWithID:(NSString *)ID{
+- (void)selectExpirationDataOrderByTimeWithLimit:(NSInteger)limit response:(void (^)(NSArray<JLImageDate *> *))response{
     
+    NSMutableArray *selectArray = [NSMutableArray array];
+    [_dataBaseQ inDatabase:^(FMDatabase * _Nonnull db) {
+        if (![db open]) {
+            NSLog(@"db open fail");
+            return;
+        }
+        FMResultSet *result = [db executeQuery:@"select * from t_image order by time limit ?" withArgumentsInArray:@[@(limit)]];;
+        
+        while ([result next]) {
+            JLImageDate *model = [[JLImageDate alloc] init];
+            model.url = [result stringForColumn:@"ID"];
+            model.timeInterval = [result doubleForColumn:@"time"];
+            [selectArray addObject:model];
+//            NSLog(@"从数据库查询到的人员 %d,%@",model.ID,[NSThread currentThread]);
+        }
+        [db close];
+        response(selectArray);
+    }];
+}
+
+- (BOOL)deleteWithID:(NSString *)ID{
+    
+    __block BOOL result = NO;//这里的block并不是异步执行的，可以返回值
     [_dataBaseQ inDatabase:^(FMDatabase * _Nonnull db) {
         if (![db open]) {
             NSLog(@"db open fail");
             return;
         }
         
-        BOOL result = [db executeUpdate:@"delete from t_image where ID = ?" withArgumentsInArray:@[ID]];
+        result = [db executeUpdate:@"delete from t_image where ID = ?" withArgumentsInArray:@[ID]];
         
         if (result) {
             NSLog(@"数据%@删除成功",ID);
@@ -125,8 +148,27 @@
         }
         [db close];
     }];
+    return result;
+}
+//暂时没用到，放着学习
+- (void)deleteLimit{
     
-
+    [_dataBaseQ inDatabase:^(FMDatabase * _Nonnull db) {
+        if (![db open]) {
+            NSLog(@"db open fail");
+            return;
+        }
+        //DELETEFROM test_tbl WHERE rowid IN(SELECT rowid FROM test_tbl ORDERBY id LIMIT100)
+        //删除前几条的
+        BOOL result = [db executeUpdate:@"delete from t_image where ID in (select ID from t_image order by time limit 5)"];
+        
+        if (result) {
+            NSLog(@"数据前5条删除成功");
+        } else {
+            NSLog(@"数据前5条删除失败");
+        }
+        [db close];
+    }];
 }
 
 
