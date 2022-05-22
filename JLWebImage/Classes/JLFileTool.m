@@ -69,4 +69,43 @@
             return [attr[NSFileSize] integerValue];
     }
  }
+
++ (BOOL)isFileExistsAtPath:(NSString *)aPath{
+    //文件管理者
+    NSFileManager *mgr = [NSFileManager defaultManager];
+    //判断字符串是否为文件/文件夹
+    BOOL dir = NO;
+    BOOL exists = [mgr fileExistsAtPath:aPath isDirectory:&dir];
+    //文件/文件夹不存在
+    return exists;
+}
+
+//删除文件
++ (BOOL)deleteFileWithUrl:(NSString *)aUrl{
+    
+    //2.2.1 获得Library/Caches文件夹
+    NSString *cachesPath = [JLFileTool getCachePath];
+    
+    //2.2.2 获得文件名
+    NSString *filename = [aUrl lastPathComponent];
+    
+    //2.2.3 计算出文件的全路径
+    NSString *file = [cachesPath stringByAppendingPathComponent:filename];
+    
+    BOOL isExists = [JLFileTool isFileExistsAtPath:file];
+    
+    if (isExists==NO) return NO;
+    
+    NSFileManager *fileManager = [NSFileManager defaultManager];
+    BOOL res=[fileManager removeItemAtPath:file error:nil];
+    if (res) {
+        NSLog(@"%@: 文件删除成功",file);
+    }else{
+        NSLog(@"%@: 文件删除失败",file);
+    }
+    
+    return res;
+    
+}
+
 @end

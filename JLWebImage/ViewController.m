@@ -9,6 +9,7 @@
 #import "ViewController.h"
 #import "JLApp.h"
 #import "UIImageView+JLWebCache.h"
+#import "DataManager.h"
 
 @interface ViewController ()
 
@@ -35,6 +36,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    [DataManager shareInstance];
     // Do any additional setup after loading the view, typically from a nib.
 }
 

@@ -8,7 +8,7 @@
 
 #import "JLWebImageOperation.h"
 #import "JLWebImageManager.h"
-
+#import "DataManager.h"
 
 @implementation JLWebImageOperation
 
@@ -39,7 +39,12 @@
         }];
         
         // 5.0 将图片文件数据写入沙盒中
-        [data writeToFile:_file atomically:YES];
+        BOOL isWrite = [data writeToFile:_file atomically:YES];
+        
+        if (isWrite) {
+            NSTimeInterval timeInterval =  [[NSDate date] timeIntervalSince1970];
+            [[DataManager shareInstance] insertDataWithKey:_url timeInterval:timeInterval];
+        }
         
         // 6.0 移除操作
         [manager removeOperationCacheWithKey:_url];

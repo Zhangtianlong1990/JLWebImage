@@ -1,5 +1,5 @@
 //
-//  JLFileTool.h
+//  JLImageDate.h
 //  JLWebImage
 //
 //  Created by 张天龙 on 2022/5/22.
@@ -10,10 +10,9 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface JLFileTool : NSObject
-+ (NSString *)getCachePath;
-+ (NSInteger)countFileSizeWithPath:(NSString *)aPath;
-+ (BOOL)deleteFileWithUrl:(NSString *)aUrl;
+@interface JLImageDate : NSObject
+@property (nonatomic,copy) NSString *url;
+@property (nonatomic,assign) NSTimeInterval timeInterval;
 @end
 
 NS_ASSUME_NONNULL_END

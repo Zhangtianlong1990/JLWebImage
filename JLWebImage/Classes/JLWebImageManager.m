@@ -7,6 +7,8 @@
 //
 
 #import "JLWebImageManager.h"
+#import "DataManager.h"
+#import "JLFileTool.h"
 
 @interface JLWebImageManager ()
 /**
@@ -38,6 +40,7 @@ JLSingletonM(WebImageManager)
         _images = [NSMutableDictionary dictionary];
         _operations = [NSMutableDictionary dictionary];
         _queue = [[NSOperationQueue alloc] init];
+        [self setupAppLifecycleNotification];
     }
     return self;
 }
@@ -90,6 +93,46 @@ JLSingletonM(WebImageManager)
     dispatch_sync(_imageQueue, ^{
         [self.images removeAllObjects];
     });
+}
+
+- (void)setupAppLifecycleNotification{
+    //后台进前台通知 UIApplicationDidBecomeActiveNotification
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didReceiveMemoryWarning) name:UIApplicationDidReceiveMemoryWarningNotification object:nil];
+    //进入后台UIApplicationDidEnterBackgroundNotification
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didEnterBackground) name:UIApplicationDidEnterBackgroundNotification object:nil];
+}
+
+//进入后台方法
+- (void)didReceiveMemoryWarning {
+        NSLog(@"%@", NSStringFromSelector(_cmd));
+    [self clearMemories];
+    [self checkExpiredImageCache];
+}
+
+    //每次后台进前台都会执行这个方法
+- (void)didEnterBackground {
+        NSLog(@"%@,getCachePath: %@", NSStringFromSelector(_cmd),[JLFileTool getCachePath]);
+    
+}
+
+- (void)checkExpiredImageCache{
+    [[DataManager shareInstance] selectExpirationData:^(NSArray<JLImageDate *> * response) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self handleData:response];
+        });
+    }];
+}
+
+- (void)handleData:(NSArray<JLImageDate *> *)response{
+    for (JLImageDate *date in response) {
+        if ([JLFileTool deleteFileWithUrl:date.url]) {
+            [[DataManager shareInstance] deleteWithID:date.url];
+        }
+    }
+}
+
+- (void)dealloc {
+    [[NSNotificationCenter defaultCenter] removeObserver:self]; //移除通知
 }
 
 @end
