@@ -27,6 +27,11 @@
 		897C0DD3283A23B30059CBB1 /* JLImageDate.m in Sources */ = {isa = PBXBuildFile; fileRef = 897C0DD2283A23B30059CBB1 /* JLImageDate.m */; };
 		899203E329BCA604006F5E40 /* JLWebImageMemory.m in Sources */ = {isa = PBXBuildFile; fileRef = 899203E229BCA604006F5E40 /* JLWebImageMemory.m */; };
 		899203E829BCC0F9006F5E40 /* JLWebImageDisk.m in Sources */ = {isa = PBXBuildFile; fileRef = 899203E729BCC0F9006F5E40 /* JLWebImageDisk.m */; };
+		899203EB29BCDD11006F5E40 /* JLWebImageMemory.m in Sources */ = {isa = PBXBuildFile; fileRef = 899203E229BCA604006F5E40 /* JLWebImageMemory.m */; };
+		899203EC29BCDD20006F5E40 /* JLWebImageDisk.m in Sources */ = {isa = PBXBuildFile; fileRef = 899203E729BCC0F9006F5E40 /* JLWebImageDisk.m */; };
+		899203EF29BCDD54006F5E40 /* MockWebImageMemory.m in Sources */ = {isa = PBXBuildFile; fileRef = 899203EE29BCDD54006F5E40 /* MockWebImageMemory.m */; };
+		899203F229BCDF3B006F5E40 /* MockWebImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 899203F129BCDF3B006F5E40 /* MockWebImageView.m */; };
+		899203F329BCE4D3006F5E40 /* JLWebImageManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 8960E45C1E72BD23004FCC6E /* JLWebImageManager.m */; };
 		B806EF85014A969A758D96EA /* Pods_JLWebImage_JLWebImageUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DAD907C5CC047BAC26D28B11 /* Pods_JLWebImage_JLWebImageUITests.framework */; };
 /* End PBXBuildFile section */
 
@@ -88,6 +93,10 @@
 		899203E529BCB604006F5E40 /* JLWebImageContact.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = JLWebImageContact.h; sourceTree = "<group>"; };
 		899203E629BCC0F9006F5E40 /* JLWebImageDisk.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = JLWebImageDisk.h; sourceTree = "<group>"; };
 		899203E729BCC0F9006F5E40 /* JLWebImageDisk.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = JLWebImageDisk.m; sourceTree = "<group>"; };
+		899203ED29BCDD54006F5E40 /* MockWebImageMemory.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MockWebImageMemory.h; sourceTree = "<group>"; };
+		899203EE29BCDD54006F5E40 /* MockWebImageMemory.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MockWebImageMemory.m; sourceTree = "<group>"; };
+		899203F029BCDF3B006F5E40 /* MockWebImageView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MockWebImageView.h; sourceTree = "<group>"; };
+		899203F129BCDF3B006F5E40 /* MockWebImageView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MockWebImageView.m; sourceTree = "<group>"; };
 		CAD40995725A57863387D9C6 /* Pods-JLWebImage.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-JLWebImage.debug.xcconfig"; path = "Target Support Files/Pods-JLWebImage/Pods-JLWebImage.debug.xcconfig"; sourceTree = "<group>"; };
 		CE5D85D5118A22828ECD1EBF /* Pods_JLWebImageTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_JLWebImageTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D4233F6C3016CAA11693F0B0 /* Pods_JLWebImage.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_JLWebImage.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -179,6 +188,10 @@
 			children = (
 				8960E42E1E72BB2A004FCC6E /* JLWebImageTests.m */,
 				8960E4301E72BB2A004FCC6E /* Info.plist */,
+				899203ED29BCDD54006F5E40 /* MockWebImageMemory.h */,
+				899203EE29BCDD54006F5E40 /* MockWebImageMemory.m */,
+				899203F029BCDF3B006F5E40 /* MockWebImageView.h */,
+				899203F129BCDF3B006F5E40 /* MockWebImageView.m */,
 			);
 			path = JLWebImageTests;
 			sourceTree = "<group>";
@@ -504,7 +517,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				899203F329BCE4D3006F5E40 /* JLWebImageManager.m in Sources */,
+				899203EC29BCDD20006F5E40 /* JLWebImageDisk.m in Sources */,
+				899203EF29BCDD54006F5E40 /* MockWebImageMemory.m in Sources */,
+				899203F229BCDF3B006F5E40 /* MockWebImageView.m in Sources */,
 				8960E42F1E72BB2A004FCC6E /* JLWebImageTests.m in Sources */,
+				899203EB29BCDD11006F5E40 /* JLWebImageMemory.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

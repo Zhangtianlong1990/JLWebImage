@@ -9,6 +9,9 @@
 #ifndef JLWebImageContact_h
 #define JLWebImageContact_h
 
+#import <Foundation/Foundation.h>
+#import <UIKit/UIKit.h>
+
 @protocol JLWebImageViewInterface <NSObject>
 
 - (NSString *)cb_getLoadingURL;
