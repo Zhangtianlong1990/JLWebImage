@@ -32,15 +32,15 @@ static char loadingURLKey;
 
 #pragma mark - JLWebImageViewInterface
 
-- (NSString *)jl_getLoadingURL{
+- (NSString *)cb_getLoadingURL{
     return self.loadingURL;
 }
 
-- (void)jl_setLoadingURL:(NSString *)loadingURL{
+- (void)cb_setLoadingURL:(NSString *)loadingURL{
     self.loadingURL = loadingURL;
 }
 
-- (void)jl_setImage:(UIImage *)image{
+- (void)cb_setImage:(UIImage *)image{
     self.image = image;
 }
 

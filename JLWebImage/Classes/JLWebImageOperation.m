@@ -37,8 +37,8 @@
         
         // 4.0 回到主线程显示图片
         [[NSOperationQueue mainQueue] addOperationWithBlock:^{
-            if (_img && [_img respondsToSelector:@selector(jl_setImage:)]) {
-                [_img jl_setImage:image];
+            if (_img && [_img respondsToSelector:@selector(cb_setImage:)]) {
+                [_img cb_setImage:image];
             }
         }];
         

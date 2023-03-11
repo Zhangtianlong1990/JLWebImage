@@ -11,9 +11,9 @@
 
 @protocol JLWebImageViewInterface <NSObject>
 
-- (NSString *)jl_getLoadingURL;
-- (void)jl_setImage:(UIImage *)image;
-- (void)jl_setLoadingURL:(NSString *)loadingURL;
+- (NSString *)cb_getLoadingURL;
+- (void)cb_setImage:(UIImage *)image;
+- (void)cb_setLoadingURL:(NSString *)loadingURL;
 
 @end
 

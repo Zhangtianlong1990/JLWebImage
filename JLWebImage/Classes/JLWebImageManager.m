@@ -46,8 +46,8 @@ JLSingletonM(WebImageManager)
 - (void)setImageView:(id<JLWebImageViewInterface>)imageView url:(NSString *)url placeholderImage:(NSString *)placeholderImage{
     // 1.0 如果此imageView正在下载图片就取消
     NSString *loadingURL = nil;
-    if ([imageView respondsToSelector:@selector(jl_getLoadingURL)] && imageView) {
-        loadingURL = [imageView jl_getLoadingURL];
+    if ([imageView respondsToSelector:@selector(cb_getLoadingURL)] && imageView) {
+        loadingURL = [imageView cb_getLoadingURL];
     }
     if (loadingURL) {
         NSOperation *operation = [self getOperationCacheWithKey:loadingURL];
@@ -62,8 +62,8 @@ JLSingletonM(WebImageManager)
     
     if (image) { //2.1 内存中有图片
         
-        if (imageView && [imageView respondsToSelector:@selector(jl_setImage:)]) {
-            [imageView jl_setImage:image];
+        if (imageView && [imageView respondsToSelector:@selector(cb_setImage:)]) {
+            [imageView cb_setImage:image];
         }
         
     }else{//2.2 内存中没有图片
@@ -83,8 +83,8 @@ JLSingletonM(WebImageManager)
         if (data) { //2.2.4.1 直接利用沙盒中图片
             
             UIImage *image = [UIImage imageWithData:data];
-            if (imageView && [imageView respondsToSelector:@selector(jl_setImage:)]) {
-                [imageView jl_setImage:image];
+            if (imageView && [imageView respondsToSelector:@selector(cb_setImage:)]) {
+                [imageView cb_setImage:image];
             }
             if (self.memory) {
                 [self.memory setupImageCache:image withKey:url];
@@ -92,16 +92,16 @@ JLSingletonM(WebImageManager)
             
         }else { //2.2.4.2  下载图片
     
-            if (imageView && [imageView respondsToSelector:@selector(jl_setImage:)]) {
-                [imageView jl_setImage:[UIImage imageNamed:placeholderImage]];
+            if (imageView && [imageView respondsToSelector:@selector(cb_setImage:)]) {
+                [imageView cb_setImage:[UIImage imageNamed:placeholderImage]];
             }
             JLWebImageOperation *operation = [self getOperationCacheWithKey:url];
             
             if (operation == nil) { // 这张图片暂时没有下载任务
                 
                 //a. 正在下载这张图片
-                if (imageView && [imageView respondsToSelector:@selector(jl_setLoadingURL:)]) {
-                    [imageView jl_setLoadingURL:url];
+                if (imageView && [imageView respondsToSelector:@selector(cb_setLoadingURL:)]) {
+                    [imageView cb_setLoadingURL:url];
                 }
                 
                 //b. 创建下载任务
