@@ -23,7 +23,7 @@
     }
     return self;
 }
-- (void)setupImageCache:(UIImage *)aImage WithKey:(NSString *)aKey{
+- (void)setupImageCache:(UIImage *)aImage withKey:(NSString *)aKey{
     if (!aKey) return;
     dispatch_barrier_async(_imageQueue, ^{
         self.images[aKey] = aImage;

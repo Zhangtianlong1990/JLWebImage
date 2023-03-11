@@ -31,7 +31,9 @@
         
         // 3.0 存到字典中
         UIImage *image = [UIImage imageWithData:data];
-        [manager.memory setupImageCache:image WithKey:_url];
+        if (manager.memory) {
+            [manager.memory setupImageCache:image withKey:_url];
+        }
         
         // 4.0 回到主线程显示图片
         [[NSOperationQueue mainQueue] addOperationWithBlock:^{

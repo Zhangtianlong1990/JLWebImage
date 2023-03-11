@@ -87,7 +87,7 @@ JLSingletonM(WebImageManager)
                 [imageView jl_setImage:image];
             }
             if (self.memory) {
-                [self.memory setupImageCache:image WithKey:url];
+                [self.memory setupImageCache:image withKey:url];
             }
             
         }else { //2.2.4.2  下载图片
