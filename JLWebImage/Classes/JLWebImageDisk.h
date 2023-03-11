@@ -7,8 +7,10 @@
 //
 
 #import <Foundation/Foundation.h>
+#import <UIKit/UIKit.h>
+#import "JLWebImageContact.h"
 
-@interface JLWebImageDisk : NSObject
+@interface JLWebImageDisk : NSObject<JLWebImageDiskInterface>
 
 @end
 

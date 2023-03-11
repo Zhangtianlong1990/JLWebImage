@@ -55,41 +55,29 @@ JLSingletonM(WebImageManager)
     }
     
     // 2.0 先从内存缓存中取出图片
-    UIImage *image = nil;
+    UIImage *memoryImage = nil;
     if (self.memory) {
-        [self.memory getImageCacheWithKey:url];
+        memoryImage = [self.memory getImageCacheWithKey:url];
     }
     
-    if (image) { //2.1 内存中有图片
-        
+    if (memoryImage) {
         if (imageView && [imageView respondsToSelector:@selector(cb_setImage:)]) {
-            [imageView cb_setImage:image];
+            [imageView cb_setImage:memoryImage];
         }
         
-    }else{//2.2 内存中没有图片
+    }else{
+        UIImage *diskImage = nil;
+        if (self.disk) {
+            diskImage = [self.disk getDiskCacheWithURL:url];
+        }
         
-        //2.2.1 获得Library/Caches文件夹
-        NSString *cachesPath = [JLFileTool getCachePath];
-        
-        //2.2.2 获得文件名
-        NSString *filename = [url lastPathComponent];
-        
-        //2.2.3 计算出文件的全路径
-        NSString *file = [cachesPath stringByAppendingPathComponent:filename];
-        
-        //2.2.4 加载沙盒的文件数据
-        NSData *data = [NSData dataWithContentsOfFile:file];
-        
-        if (data) { //2.2.4.1 直接利用沙盒中图片
-            
-            UIImage *image = [UIImage imageWithData:data];
+        if (diskImage) { //2.2.4.1 直接利用沙盒中图片
             if (imageView && [imageView respondsToSelector:@selector(cb_setImage:)]) {
-                [imageView cb_setImage:image];
+                [imageView cb_setImage:diskImage];
             }
             if (self.memory) {
-                [self.memory setupImageCache:image withKey:url];
+                [self.memory setupImageCache:diskImage withKey:url];
             }
-            
         }else { //2.2.4.2  下载图片
     
             if (imageView && [imageView respondsToSelector:@selector(cb_setImage:)]) {
@@ -108,7 +96,6 @@ JLSingletonM(WebImageManager)
                 operation = [[JLWebImageOperation alloc] init];
                 operation.url = url;
                 operation.img = imageView;
-                operation.file = file;
                 
                 //c. 添加到队列中
                 [self addOperationToQueue:operation];

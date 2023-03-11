@@ -23,4 +23,9 @@
 - (void)clearMemories;
 @end
 
+@protocol JLWebImageDiskInterface <NSObject>
+- (UIImage *)getDiskCacheWithURL:(NSString *)url;
+- (BOOL)setupDiskCache:(NSData *)aImageData withURL:(NSString *)url;
+@end
+
 #endif /* JLWebImageContact_h */

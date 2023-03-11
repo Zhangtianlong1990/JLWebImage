@@ -108,4 +108,17 @@
     
 }
 
++ (NSString *)getFilePath: (NSString *)aUrl{
+    //2.2.1 获得Library/Caches文件夹
+    NSString *cachesPath = [JLFileTool getCachePath];
+    
+    //2.2.2 获得文件名
+    NSString *filename = [aUrl lastPathComponent];
+    
+    //2.2.3 计算出文件的全路径
+    NSString *filePath = [cachesPath stringByAppendingPathComponent:filename];
+    
+    return filePath;
+}
+
 @end

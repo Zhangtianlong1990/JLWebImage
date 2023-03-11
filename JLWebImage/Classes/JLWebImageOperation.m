@@ -43,7 +43,10 @@
         }];
         
         // 5.0 将图片文件数据写入沙盒中
-        BOOL isWrite = [data writeToFile:_file atomically:YES];
+        BOOL isWrite = NO;
+        if (manager.disk) {
+            isWrite = [manager.disk setupDiskCache:data withURL:_url];
+        }
         
         if (isWrite) {
             NSTimeInterval timeInterval =  [[NSDate date] timeIntervalSince1970];

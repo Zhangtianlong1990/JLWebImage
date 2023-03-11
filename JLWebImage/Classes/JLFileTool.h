@@ -14,6 +14,7 @@ NS_ASSUME_NONNULL_BEGIN
 + (NSString *)getCachePath;
 + (NSInteger)countFileSizeWithPath:(NSString *)aPath;
 + (BOOL)deleteFileWithUrl:(NSString *)aUrl;
++ (NSString *)getFilePath: (NSString *)aUrl;
 @end
 
 NS_ASSUME_NONNULL_END

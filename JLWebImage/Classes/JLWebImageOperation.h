@@ -15,12 +15,6 @@
  图片地址
  */
 @property (nonatomic,copy) NSString *url;
-
-/**
- 文件写入路径
- */
-@property (nonatomic,copy) NSString *file;
-
 /**
  需要获取图片的ImageView
  */
