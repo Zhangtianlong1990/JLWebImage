@@ -9,11 +9,13 @@
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
 #import "JLSingleton.h"
+#import "JLWebImageMemory.h"
+#import "JLWebImageContact.h"
 
 @interface JLWebImageManager<T: NSOperation *> : NSObject
+@property (nonatomic,strong) JLWebImageMemory *memory;
 JLSingletonH(WebImageManager)
-- (void)setupImageCache:(UIImage *)aImage WithKey:(NSString *)aKey;
-- (UIImage *)getImageCacheWithKey:(NSString *)aKey;
+- (void)setImageView:(id<JLWebImageViewInterface>)imageView url:(NSString *)url placeholderImage:(NSString *)placeholderImage;
 - (void)addOperationToQueue:(T)aOperation;
 - (void)setOperationCacheWithKey:(T)aOperation withKey:(NSString *)aKey;
 - (T)getOperationCacheWithKey:(NSString *)aKey;

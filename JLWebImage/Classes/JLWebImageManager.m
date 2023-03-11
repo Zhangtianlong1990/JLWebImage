@@ -9,6 +9,7 @@
 #import "JLWebImageManager.h"
 #import "DataManager.h"
 #import "JLFileTool.h"
+#import "JLWebImageOperation.h"
 
 @interface JLWebImageManager ()
 /**
@@ -23,7 +24,6 @@
  队列对象
  */
 @property (nonatomic, strong) NSOperationQueue *queue;
-@property(nonatomic, strong) dispatch_queue_t imageQueue;
 @property(nonatomic, strong) dispatch_queue_t operationQueue;
 @end
 
@@ -35,9 +35,8 @@ JLSingletonM(WebImageManager)
 {
     self = [super init];
     if (self) {
-        _imageQueue = dispatch_queue_create("com.image.safequeue", DISPATCH_QUEUE_CONCURRENT);
+        _memory = [[JLWebImageMemory alloc] init];
         _operationQueue = dispatch_queue_create("com.operation.safequeue", DISPATCH_QUEUE_CONCURRENT);
-        _images = [NSMutableDictionary dictionary];
         _operations = [NSMutableDictionary dictionary];
         _queue = [[NSOperationQueue alloc] init];
         [self setupAppLifecycleNotification];
@@ -45,20 +44,78 @@ JLSingletonM(WebImageManager)
     return self;
 }
 
-- (void)setupImageCache:(UIImage *)aImage WithKey:(NSString *)aKey{
-    if (!aKey) return;
-    dispatch_barrier_async(_imageQueue, ^{
-        self.images[aKey] = aImage;
-    });
-}
-
-- (UIImage *)getImageCacheWithKey:(NSString *)aKey{
-    __block UIImage *image = nil;
-    if (!aKey) return image;
-    dispatch_sync(_imageQueue, ^{
-        image = self.images[aKey];
-    });
-    return image;
+- (void)setImageView:(id<JLWebImageViewInterface>)imageView url:(NSString *)url placeholderImage:(NSString *)placeholderImage{
+    // 1.0 如果此imageView正在下载图片就取消
+    NSString *loadingURL = nil;
+    if ([imageView respondsToSelector:@selector(jl_getLoadingURL)] && imageView) {
+        loadingURL = [imageView jl_getLoadingURL];
+    }
+    if (loadingURL) {
+        NSOperation *operation = [self getOperationCacheWithKey:loadingURL];
+        [operation cancel];
+    }
+    
+    // 2.0 先从内存缓存中取出图片
+    UIImage *image = [self.memory getImageCacheWithKey:url];
+    
+    if (image) { //2.1 内存中有图片
+        
+        if (imageView && [imageView respondsToSelector:@selector(jl_setImage:)]) {
+            [imageView jl_setImage:image];
+        }
+        
+    }else{//2.2 内存中没有图片
+        
+        //2.2.1 获得Library/Caches文件夹
+        NSString *cachesPath = [JLFileTool getCachePath];
+        
+        //2.2.2 获得文件名
+        NSString *filename = [url lastPathComponent];
+        
+        //2.2.3 计算出文件的全路径
+        NSString *file = [cachesPath stringByAppendingPathComponent:filename];
+        
+        //2.2.4 加载沙盒的文件数据
+        NSData *data = [NSData dataWithContentsOfFile:file];
+        
+        if (data) { //2.2.4.1 直接利用沙盒中图片
+            
+            UIImage *image = [UIImage imageWithData:data];
+            if (imageView && [imageView respondsToSelector:@selector(jl_setImage:)]) {
+                [imageView jl_setImage:image];
+            }
+            [self.memory setupImageCache:image WithKey:url];
+            
+        }else { //2.2.4.2  下载图片
+    
+            if (imageView && [imageView respondsToSelector:@selector(jl_setImage:)]) {
+                [imageView jl_setImage:[UIImage imageNamed:placeholderImage]];
+            }
+            JLWebImageOperation *operation = [self getOperationCacheWithKey:url];
+            
+            if (operation == nil) { // 这张图片暂时没有下载任务
+                
+                //a. 正在下载这张图片
+                if (imageView && [imageView respondsToSelector:@selector(jl_setLoadingURL:)]) {
+                    [imageView jl_setLoadingURL:url];
+                }
+                
+                //b. 创建下载任务
+                operation = [[JLWebImageOperation alloc] init];
+                operation.url = url;
+                operation.img = imageView;
+                operation.file = file;
+                
+                //c. 添加到队列中
+                [self addOperationToQueue:operation];
+                //d. 存放到字典中
+                [self setOperationCacheWithKey:operation withKey:url];
+                
+            }
+        
+        }
+        
+    }
 }
 
 - (void)addOperationToQueue:(NSOperation *)aOperation{
@@ -75,7 +132,7 @@ JLSingletonM(WebImageManager)
 - (NSOperation *)getOperationCacheWithKey:(NSString *)aKey{
     __block NSOperation *operation = nil;
     if (!aKey) return operation;
-    dispatch_sync(_imageQueue, ^{
+    dispatch_sync(_operationQueue, ^{
         operation = self.operations[aKey];
     });
     return operation;
@@ -90,9 +147,7 @@ JLSingletonM(WebImageManager)
 
 
 - (void)clearMemories{
-    dispatch_sync(_imageQueue, ^{
-        [self.images removeAllObjects];
-    });
+    [self.memory clearMemories];
 }
 
 - (void)setupAppLifecycleNotification{

@@ -25,6 +25,7 @@
 		897C0DBA2839FB890059CBB1 /* JLFileTool.m in Sources */ = {isa = PBXBuildFile; fileRef = 897C0DB92839FB890059CBB1 /* JLFileTool.m */; };
 		897C0DD0283A148E0059CBB1 /* DataManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 897C0DCF283A148E0059CBB1 /* DataManager.m */; };
 		897C0DD3283A23B30059CBB1 /* JLImageDate.m in Sources */ = {isa = PBXBuildFile; fileRef = 897C0DD2283A23B30059CBB1 /* JLImageDate.m */; };
+		899203E329BCA604006F5E40 /* JLWebImageMemory.m in Sources */ = {isa = PBXBuildFile; fileRef = 899203E229BCA604006F5E40 /* JLWebImageMemory.m */; };
 		B806EF85014A969A758D96EA /* Pods_JLWebImage_JLWebImageUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DAD907C5CC047BAC26D28B11 /* Pods_JLWebImage_JLWebImageUITests.framework */; };
 /* End PBXBuildFile section */
 
@@ -81,6 +82,9 @@
 		897C0DCF283A148E0059CBB1 /* DataManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DataManager.m; sourceTree = "<group>"; };
 		897C0DD1283A23B30059CBB1 /* JLImageDate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = JLImageDate.h; sourceTree = "<group>"; };
 		897C0DD2283A23B30059CBB1 /* JLImageDate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = JLImageDate.m; sourceTree = "<group>"; };
+		899203E129BCA604006F5E40 /* JLWebImageMemory.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = JLWebImageMemory.h; sourceTree = "<group>"; };
+		899203E229BCA604006F5E40 /* JLWebImageMemory.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = JLWebImageMemory.m; sourceTree = "<group>"; };
+		899203E529BCB604006F5E40 /* JLWebImageContact.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = JLWebImageContact.h; sourceTree = "<group>"; };
 		CAD40995725A57863387D9C6 /* Pods-JLWebImage.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-JLWebImage.debug.xcconfig"; path = "Target Support Files/Pods-JLWebImage/Pods-JLWebImage.debug.xcconfig"; sourceTree = "<group>"; };
 		CE5D85D5118A22828ECD1EBF /* Pods_JLWebImageTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_JLWebImageTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D4233F6C3016CAA11693F0B0 /* Pods_JLWebImage.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_JLWebImage.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -192,6 +196,7 @@
 				897C0DCF283A148E0059CBB1 /* DataManager.m */,
 				897C0DD1283A23B30059CBB1 /* JLImageDate.h */,
 				897C0DD2283A23B30059CBB1 /* JLImageDate.m */,
+				899203E529BCB604006F5E40 /* JLWebImageContact.h */,
 				8960E45F1E72BD23004FCC6E /* UIImageView+JLWebCache.h */,
 				8960E4601E72BD23004FCC6E /* UIImageView+JLWebCache.m */,
 				8960E45B1E72BD23004FCC6E /* JLWebImageManager.h */,
@@ -201,6 +206,8 @@
 				8960E45D1E72BD23004FCC6E /* JLWebImageOperation.h */,
 				8960E45E1E72BD23004FCC6E /* JLWebImageOperation.m */,
 				8960E45A1E72BD23004FCC6E /* JLSingleton.h */,
+				899203E129BCA604006F5E40 /* JLWebImageMemory.h */,
+				899203E229BCA604006F5E40 /* JLWebImageMemory.m */,
 			);
 			path = Classes;
 			sourceTree = "<group>";
@@ -480,6 +487,7 @@
 				897C0DBA2839FB890059CBB1 /* JLFileTool.m in Sources */,
 				897C0DD3283A23B30059CBB1 /* JLImageDate.m in Sources */,
 				8960E4621E72BD23004FCC6E /* JLWebImageOperation.m in Sources */,
+				899203E329BCA604006F5E40 /* JLWebImageMemory.m in Sources */,
 				8960E4631E72BD23004FCC6E /* UIImageView+JLWebCache.m in Sources */,
 				897C0DD0283A148E0059CBB1 /* DataManager.m in Sources */,
 				8960E4161E72BB2A004FCC6E /* main.m in Sources */,

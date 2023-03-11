@@ -31,11 +31,13 @@
         
         // 3.0 存到字典中
         UIImage *image = [UIImage imageWithData:data];
-        [manager setupImageCache:image WithKey:_url];
+        [manager.memory setupImageCache:image WithKey:_url];
         
         // 4.0 回到主线程显示图片
         [[NSOperationQueue mainQueue] addOperationWithBlock:^{
-            _img.image = image;
+            if (_img && [_img respondsToSelector:@selector(jl_setImage:)]) {
+                [_img jl_setImage:image];
+            }
         }];
         
         // 5.0 将图片文件数据写入沙盒中

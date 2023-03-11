@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "JLWebImageContact.h"
 
 @interface JLWebImageOperation : NSOperation
 
@@ -23,6 +24,6 @@
 /**
  需要获取图片的ImageView
  */
-@property (nonatomic,weak) UIImageView *img;
+@property (nonatomic,weak) id<JLWebImageViewInterface> img;
 
 @end

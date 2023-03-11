@@ -7,9 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "JLWebImageContact.h"
 
-@interface UIImageView (JLWebCache)
 
+@interface UIImageView (JLWebCache)<JLWebImageViewInterface>
 /**
  下载图片
 
