@@ -13,7 +13,7 @@
 #import "JLWebImageContact.h"
 
 @interface JLWebImageManager<T: NSOperation *> : NSObject
-@property (nonatomic,strong) JLWebImageMemory *memory;
+@property (nonatomic,strong) id<JLWebImageMemoryInterface> memory;
 JLSingletonH(WebImageManager)
 - (void)setImageView:(id<JLWebImageViewInterface>)imageView url:(NSString *)url placeholderImage:(NSString *)placeholderImage;
 - (void)addOperationToQueue:(T)aOperation;

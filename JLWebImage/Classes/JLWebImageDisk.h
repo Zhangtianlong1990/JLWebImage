@@ -1,5 +1,5 @@
 //
-//  JLWebImageMemory.h
+//  JLWebImageDisk.h
 //  JLWebImage
 //
 //  Created by 张天龙 on 2023/3/11.
@@ -7,10 +7,8 @@
 //
 
 #import <Foundation/Foundation.h>
-#import <UIKit/UIKit.h>
-#import "JLWebImageContact.h"
 
-@interface JLWebImageMemory : NSObject<JLWebImageMemoryInterface>
+@interface JLWebImageDisk : NSObject
 
 @end
 

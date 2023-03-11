@@ -17,4 +17,10 @@
 
 @end
 
+@protocol JLWebImageMemoryInterface <NSObject>
+- (void)setupImageCache:(UIImage *)aImage WithKey:(NSString *)aKey;
+- (UIImage *)getImageCacheWithKey:(NSString *)aKey;
+- (void)clearMemories;
+@end
+
 #endif /* JLWebImageContact_h */

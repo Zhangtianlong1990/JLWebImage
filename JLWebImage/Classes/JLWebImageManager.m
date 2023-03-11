@@ -35,7 +35,6 @@ JLSingletonM(WebImageManager)
 {
     self = [super init];
     if (self) {
-        _memory = [[JLWebImageMemory alloc] init];
         _operationQueue = dispatch_queue_create("com.operation.safequeue", DISPATCH_QUEUE_CONCURRENT);
         _operations = [NSMutableDictionary dictionary];
         _queue = [[NSOperationQueue alloc] init];
@@ -56,7 +55,10 @@ JLSingletonM(WebImageManager)
     }
     
     // 2.0 先从内存缓存中取出图片
-    UIImage *image = [self.memory getImageCacheWithKey:url];
+    UIImage *image = nil;
+    if (self.memory) {
+        [self.memory getImageCacheWithKey:url];
+    }
     
     if (image) { //2.1 内存中有图片
         
@@ -84,7 +86,9 @@ JLSingletonM(WebImageManager)
             if (imageView && [imageView respondsToSelector:@selector(jl_setImage:)]) {
                 [imageView jl_setImage:image];
             }
-            [self.memory setupImageCache:image WithKey:url];
+            if (self.memory) {
+                [self.memory setupImageCache:image WithKey:url];
+            }
             
         }else { //2.2.4.2  下载图片
     
@@ -147,7 +151,9 @@ JLSingletonM(WebImageManager)
 
 
 - (void)clearMemories{
-    [self.memory clearMemories];
+    if (self.memory) {
+        [self.memory clearMemories];
+    }
 }
 
 - (void)setupAppLifecycleNotification{
