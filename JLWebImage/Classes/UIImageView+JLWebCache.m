@@ -11,6 +11,7 @@
 #import "JLWebImageMemory.h"
 #import "JLWebImageDisk.h"
 #import "JLWebImageDownloader.h"
+#import "JLThreadTool.h"
 #import <objc/runtime.h>
 
 static char loadingURLKey;
@@ -34,20 +35,17 @@ static char loadingURLKey;
 
 #pragma mark - JLWebImageViewInterface
 
-- (NSString *)cb_getLoadingURL{
-    return self.loadingURL;
+- (void)cb_setImage:(UIImage *)image url:(NSString *)url{
+    [JLThreadTool asyncMainThread:^{
+        if ([self.loadingURL isEqualToString:url]) {
+            self.image = image;
+        }
+    }];
 }
 
-- (void)cb_setLoadingURL:(NSString *)loadingURL{
-    self.loadingURL = loadingURL;
-}
-
-- (void)cb_setImage:(UIImage *)image{
-    self.image = image;
-}
-
-- (void)jl_setImageWithURL:(NSString *)url placeholderImage:(NSString *)placeholderImage{
+- (void)jl_setImageWithURL:(NSString *)url placeholderImage:(UIImage *)placeholderImage{
     NSAssert(url != nil, @"url is nil!");
+    
     JLWebImageManager *manager = [JLWebImageManager sharedWebImageManager];
     if (!manager.memory) {
         manager.memory = [[JLWebImageMemory alloc] init];
@@ -61,7 +59,11 @@ static char loadingURLKey;
         manager.downloader = [[JLWebImageDownloader alloc] init];
     }
     
-    [[JLWebImageManager sharedWebImageManager] setImageView:self url:url placeholderImage:placeholderImage];
+    self.loadingURL = url;
+    
+    [JLThreadTool asyncGlobalQueue:^{
+        [[JLWebImageManager sharedWebImageManager] setImageView:self url:[url copy] placeholderImage:placeholderImage];
+    }];
     
 }
 

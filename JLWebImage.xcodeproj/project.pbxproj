@@ -33,6 +33,7 @@
 		899203F229BCDF3B006F5E40 /* MockWebImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 899203F129BCDF3B006F5E40 /* MockWebImageView.m */; };
 		899203F329BCE4D3006F5E40 /* JLWebImageManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 8960E45C1E72BD23004FCC6E /* JLWebImageManager.m */; };
 		899203F629BD4AE3006F5E40 /* JLWebImageDownloader.m in Sources */ = {isa = PBXBuildFile; fileRef = 899203F529BD4AE3006F5E40 /* JLWebImageDownloader.m */; };
+		89BEC48E29BDB9D900874A50 /* JLThreadTool.m in Sources */ = {isa = PBXBuildFile; fileRef = 89BEC48D29BDB9D900874A50 /* JLThreadTool.m */; };
 		B806EF85014A969A758D96EA /* Pods_JLWebImage_JLWebImageUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DAD907C5CC047BAC26D28B11 /* Pods_JLWebImage_JLWebImageUITests.framework */; };
 /* End PBXBuildFile section */
 
@@ -100,6 +101,8 @@
 		899203F129BCDF3B006F5E40 /* MockWebImageView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MockWebImageView.m; sourceTree = "<group>"; };
 		899203F429BD4AE3006F5E40 /* JLWebImageDownloader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = JLWebImageDownloader.h; sourceTree = "<group>"; };
 		899203F529BD4AE3006F5E40 /* JLWebImageDownloader.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = JLWebImageDownloader.m; sourceTree = "<group>"; };
+		89BEC48C29BDB9D900874A50 /* JLThreadTool.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = JLThreadTool.h; sourceTree = "<group>"; };
+		89BEC48D29BDB9D900874A50 /* JLThreadTool.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = JLThreadTool.m; sourceTree = "<group>"; };
 		CAD40995725A57863387D9C6 /* Pods-JLWebImage.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-JLWebImage.debug.xcconfig"; path = "Target Support Files/Pods-JLWebImage/Pods-JLWebImage.debug.xcconfig"; sourceTree = "<group>"; };
 		CE5D85D5118A22828ECD1EBF /* Pods_JLWebImageTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_JLWebImageTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D4233F6C3016CAA11693F0B0 /* Pods_JLWebImage.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_JLWebImage.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -231,6 +234,8 @@
 				899203E729BCC0F9006F5E40 /* JLWebImageDisk.m */,
 				899203F429BD4AE3006F5E40 /* JLWebImageDownloader.h */,
 				899203F529BD4AE3006F5E40 /* JLWebImageDownloader.m */,
+				89BEC48C29BDB9D900874A50 /* JLThreadTool.h */,
+				89BEC48D29BDB9D900874A50 /* JLThreadTool.m */,
 			);
 			path = Classes;
 			sourceTree = "<group>";
@@ -504,6 +509,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				8960E41C1E72BB2A004FCC6E /* ViewController.m in Sources */,
+				89BEC48E29BDB9D900874A50 /* JLThreadTool.m in Sources */,
 				8960E44B1E72BB77004FCC6E /* JLApp.m in Sources */,
 				8960E4611E72BD23004FCC6E /* JLWebImageManager.m in Sources */,
 				8960E4191E72BB2A004FCC6E /* AppDelegate.m in Sources */,

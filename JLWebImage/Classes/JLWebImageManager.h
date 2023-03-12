@@ -19,7 +19,7 @@
 
 JLSingletonH(WebImageManager)
 
-- (void)setImageView:(id<JLWebImageViewInterface>)imageView url:(NSString *)url placeholderImage:(NSString *)placeholderImage;
+- (void)setImageView:(id<JLWebImageViewInterface>)imageView url:(NSString *)url placeholderImage:(UIImage *)placeholderImage;
 /**
  清除图片缓存
  */

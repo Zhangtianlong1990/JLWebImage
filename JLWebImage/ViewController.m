@@ -52,10 +52,19 @@
     static NSString *ID = @"app";
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:ID];
     
+    if (!cell) {
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:ID];
+        UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(250, 10, 50, 50)];
+        imageView.tag = 100;
+        imageView.backgroundColor = [UIColor redColor];
+        [cell.contentView addSubview:imageView];
+    }
+    
     JLApp *app = self.apps[indexPath.row];
     cell.textLabel.text = app.name;
     cell.detailTextLabel.text = app.download;
-    [cell.imageView jl_setImageWithURL:app.icon placeholderImage:@"placeholder"];
+    UIImageView *view = (UIImageView *)[cell viewWithTag:100];
+    [view jl_setImageWithURL:app.icon placeholderImage:[UIImage imageNamed:@"placeholder"]];
     
     return cell;
 }

@@ -17,6 +17,6 @@
  @param url 图片地址
  @param placeholderImage 占位图片名称
  */
-- (void)jl_setImageWithURL:(NSString *)url placeholderImage:(NSString *)placeholderImage;
+- (void)jl_setImageWithURL:(NSString *)url placeholderImage:(UIImage *)placeholderImage;
 
 @end

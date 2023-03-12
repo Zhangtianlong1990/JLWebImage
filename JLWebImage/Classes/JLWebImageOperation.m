@@ -9,6 +9,7 @@
 #import "JLWebImageOperation.h"
 #import "JLWebImageManager.h"
 #import "DataManager.h"
+#import "JLThreadTool.h"
 
 @implementation JLWebImageOperation
 
@@ -21,10 +22,11 @@
         // 1.0 下载图片
         NSData *data = [NSData dataWithContentsOfURL:[NSURL URLWithString:_url]];
         
-        // 2.0 数据加载失败或者被取消了
-        if (data == nil || self.isCancelled) {
+        NSString *opKey = [NSString stringWithFormat:@"%@-%@",self.img.description,self.url];
+        
+        if (data == nil) {
             // 移除操作
-            [manager.downloader removeOperationCacheWithKey:_url];
+            [manager.downloader removeOperationCacheWithKey:opKey];
             return;
             
         }
@@ -34,9 +36,7 @@
         [manager.memory setupImageCache:image withKey:_url];
         
         // 4.0 回到主线程显示图片
-        [[NSOperationQueue mainQueue] addOperationWithBlock:^{
-            [_img cb_setImage:image];
-        }];
+        [_img cb_setImage:image url:_url];
         
         // 5.0 将图片文件数据写入沙盒中
         BOOL isWrite = [manager.disk setupDiskCache:data withURL:_url];
@@ -48,7 +48,7 @@
         
         // 6.0 移除操作
         // 移除操作
-        [self.downloader removeOperationCacheWithKey:_url];
+        [manager.downloader removeOperationCacheWithKey:opKey];
         
     }
     

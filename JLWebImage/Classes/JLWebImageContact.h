@@ -13,11 +13,7 @@
 #import <UIKit/UIKit.h>
 
 @protocol JLWebImageViewInterface <NSObject>
-
-- (NSString *)cb_getLoadingURL;
-- (void)cb_setImage:(UIImage *)image;
-- (void)cb_setLoadingURL:(NSString *)loadingURL;
-
+- (void)cb_setImage:(UIImage *)image url:(NSString *)url;
 @end
 
 @protocol JLWebImageMemoryInterface <NSObject>

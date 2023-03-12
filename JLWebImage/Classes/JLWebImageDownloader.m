@@ -39,12 +39,10 @@
     NSAssert(imageView != nil, @"imageView is nil!");
     NSAssert(url != nil, @"url is nil!");
     
-    JLWebImageOperation *operation = [self getOperationCacheWithKey:url];
+    NSString *opKey = [NSString stringWithFormat:@"%@-%@",imageView.description,url];
+    JLWebImageOperation *operation = [self getOperationCacheWithKey:opKey];
     
-    if (operation == nil) { // 这张图片暂时没有下载任务
-        
-        //a. 正在下载这张图片
-        [imageView cb_setLoadingURL:url];
+    if (operation == nil) { // 这个imageView没有这个url的下载任务
         
         //b. 创建下载任务
         operation = [[JLWebImageOperation alloc] init];
@@ -54,7 +52,7 @@
         //c. 添加到队列中
         [self addOperationToQueue:operation];
         //d. 存放到字典中
-        [self setOperationCacheWithKey:operation withKey:url];
+        [self setOperationCacheWithKey:operation withKey:opKey];
         
     }
 }

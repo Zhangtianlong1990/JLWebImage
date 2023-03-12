@@ -10,6 +10,7 @@
 #import "DataManager.h"
 #import "JLFileTool.h"
 #import "JLWebImageOperation.h"
+#import "JLThreadTool.h"
 
 @interface JLWebImageManager ()
 
@@ -28,7 +29,7 @@ JLSingletonM(WebImageManager)
     return self;
 }
 
-- (void)setImageView:(id<JLWebImageViewInterface>)imageView url:(NSString *)url placeholderImage:(NSString *)placeholderImage{
+- (void)setImageView:(id<JLWebImageViewInterface>)imageView url:(NSString *)url placeholderImage:(UIImage *)placeholderImage{
     
     NSAssert(imageView != nil, @"imageView is nil!");
     NSAssert(url != nil, @"url is nil!");
@@ -36,32 +37,28 @@ JLSingletonM(WebImageManager)
     NSAssert(self.disk != nil, @"disk is nil!");
     NSAssert(self.downloader != nil, @"downloader is nil!");
     
-    // 1.0 如果此imageView正在下载图片就取消
-    NSString *loadingURL = [imageView cb_getLoadingURL];;
-    if (loadingURL) {
-        NSOperation *operation = [self.downloader getOperationCacheWithKey:loadingURL];
-        if (operation && !operation.isCancelled) {
-            [operation cancel];
-        }
+    //下载图片前设置默认图片等待
+    if (placeholderImage) {
+        [imageView cb_setImage:placeholderImage url:url];
+    }else{
+        [imageView cb_setImage:nil url:url];
     }
     
     // 2.0 先从内存缓存中取出图片
     UIImage *memoryImage = [self.memory getImageCacheWithKey:url];;
     
     if (memoryImage) {
-        [imageView cb_setImage:memoryImage];
+        NSLog(@"获取缓存：%@",url);
+        [imageView cb_setImage:memoryImage url:url];
     }else{
         UIImage *diskImage = [self.disk getDiskCacheWithURL:url];
         
         if (diskImage) { //2.2.4.1 直接利用沙盒中图片
-            [imageView cb_setImage:diskImage];
+            NSLog(@"获取磁盘：%@",url);
+            [imageView cb_setImage:diskImage url:url];
             [self.memory setupImageCache:diskImage withKey:url];
         }else { //2.2.4.2  下载图片
-            
-            //下载图片前设置默认图片等待
-            if (placeholderImage) {
-                [imageView cb_setImage:[UIImage imageNamed:placeholderImage]];
-            }
+            NSLog(@"启动下载op：%@ %@",url,[NSThread currentThread]);
             [self.downloader downloadImage:imageView url:url];
         }
         
