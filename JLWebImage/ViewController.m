@@ -58,6 +58,7 @@
         imageView.tag = 100;
         imageView.backgroundColor = [UIColor redColor];
         [cell.contentView addSubview:imageView];
+        
     }
     
     JLApp *app = self.apps[indexPath.row];

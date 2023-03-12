@@ -11,6 +11,7 @@
 #import "JLWebImageMemory.h"
 #import "JLWebImageDisk.h"
 #import "JLWebImageDownloader.h"
+#import "JLWebImageDB.h"
 #import "JLThreadTool.h"
 #import <objc/runtime.h>
 
@@ -57,6 +58,10 @@ static char loadingURLKey;
     
     if (!manager.downloader) {
         manager.downloader = [[JLWebImageDownloader alloc] init];
+    }
+    
+    if (!manager.db) {
+        manager.db = [[JLWebImageDB alloc] init];
     }
     
     self.loadingURL = url;

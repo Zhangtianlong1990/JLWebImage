@@ -36,4 +36,11 @@
 - (void)removeOperationCacheWithKey:(NSString *)aKey;
 @end
 
+@protocol JLWebImageDBInterface <NSObject>
+
+- (void)insertDataWithKey:(NSString *)aKey timeInterval:(NSTimeInterval)timeInterval;
+- (void)checkExpiredImageCache;
+
+@end
+
 #endif /* JLWebImageContact_h */

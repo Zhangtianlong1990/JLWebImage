@@ -33,7 +33,9 @@
         
         // 3.0 存到字典中
         UIImage *image = [UIImage imageWithData:data];
-        [manager.memory setupImageCache:image withKey:_url];
+        if (image) {
+            [manager.memory setupImageCache:image withKey:_url];
+        }
         
         // 4.0 回到主线程显示图片
         [_img cb_setImage:image url:_url];
@@ -43,7 +45,7 @@
         
         if (isWrite) {
             NSTimeInterval timeInterval =  [[NSDate date] timeIntervalSince1970];
-            [[DataManager shareInstance] insertDataWithKey:_url timeInterval:timeInterval];
+            [manager.db insertDataWithKey:_url timeInterval:timeInterval];
         }
         
         // 6.0 移除操作

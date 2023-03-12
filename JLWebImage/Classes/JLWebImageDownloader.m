@@ -43,7 +43,6 @@
     JLWebImageOperation *operation = [self getOperationCacheWithKey:opKey];
     
     if (operation == nil) { // 这个imageView没有这个url的下载任务
-        
         //b. 创建下载任务
         operation = [[JLWebImageOperation alloc] init];
         operation.url = url;

@@ -15,7 +15,8 @@
 
 @property (nonatomic,strong) id<JLWebImageMemoryInterface> memory;
 @property (nonatomic,strong) id<JLWebImageDiskInterface> disk;
-@property (nonatomic,strong) id<JLWebImageDownloaderInterface>downloader;
+@property (nonatomic,strong) id<JLWebImageDownloaderInterface> downloader;
+@property (nonatomic,strong) id<JLWebImageDBInterface> db;
 
 JLSingletonH(WebImageManager)
 
