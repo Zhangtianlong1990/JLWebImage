@@ -34,6 +34,7 @@ JLSingletonM(WebImageManager)
     NSAssert(self.memory != nil, @"memory is nil!");
     NSAssert(self.disk != nil, @"disk is nil!");
     NSAssert(self.downloader != nil, @"downloader is nil!");
+    NSAssert(self.db != nil, @"db is nil!");
     
     //下载图片前设置默认图片等待
     if (placeholderImage) {
