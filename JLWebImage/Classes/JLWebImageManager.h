@@ -12,14 +12,14 @@
 #import "JLWebImageContact.h"
 
 @interface JLWebImageManager<T: NSOperation *> : NSObject
+
 @property (nonatomic,strong) id<JLWebImageMemoryInterface> memory;
 @property (nonatomic,strong) id<JLWebImageDiskInterface> disk;
+@property (nonatomic,strong) id<JLWebImageDownloaderInterface>downloader;
+
 JLSingletonH(WebImageManager)
+
 - (void)setImageView:(id<JLWebImageViewInterface>)imageView url:(NSString *)url placeholderImage:(NSString *)placeholderImage;
-- (void)addOperationToQueue:(T)aOperation;
-- (void)setOperationCacheWithKey:(T)aOperation withKey:(NSString *)aKey;
-- (T)getOperationCacheWithKey:(NSString *)aKey;
-- (void)removeOperationCacheWithKey:(NSString *)aKey;
 /**
  清除图片缓存
  */

@@ -10,6 +10,7 @@
 #import "JLWebImageManager.h"
 #import "JLWebImageMemory.h"
 #import "JLWebImageDisk.h"
+#import "JLWebImageDownloader.h"
 #import <objc/runtime.h>
 
 static char loadingURLKey;
@@ -46,10 +47,20 @@ static char loadingURLKey;
 }
 
 - (void)jl_setImageWithURL:(NSString *)url placeholderImage:(NSString *)placeholderImage{
-    JLWebImageMemory *memory = [[JLWebImageMemory alloc] init];
-    JLWebImageDisk *disk = [[JLWebImageDisk alloc] init];
-    [JLWebImageManager sharedWebImageManager].memory = memory;
-    [JLWebImageManager sharedWebImageManager].disk = disk;
+    NSAssert(url != nil, @"url is nil!");
+    JLWebImageManager *manager = [JLWebImageManager sharedWebImageManager];
+    if (!manager.memory) {
+        manager.memory = [[JLWebImageMemory alloc] init];
+    }
+    
+    if (!manager.disk) {
+        manager.disk = [[JLWebImageDisk alloc] init];
+    }
+    
+    if (!manager.downloader) {
+        manager.downloader = [[JLWebImageDownloader alloc] init];
+    }
+    
     [[JLWebImageManager sharedWebImageManager] setImageView:self url:url placeholderImage:placeholderImage];
     
 }

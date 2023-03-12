@@ -31,4 +31,13 @@
 - (BOOL)setupDiskCache:(NSData *)aImageData withURL:(NSString *)url;
 @end
 
+@class JLWebImageOperation;
+@protocol JLWebImageDownloaderInterface <NSObject>
+- (void)downloadImage:(id<JLWebImageViewInterface>)imageView url:(NSString *)url;
+- (void)addOperationToQueue:(JLWebImageOperation *)aOperation;
+- (void)setOperationCacheWithKey:(JLWebImageOperation *)aOperation withKey:(NSString *)aKey;
+- (JLWebImageOperation *)getOperationCacheWithKey:(NSString *)aKey;
+- (void)removeOperationCacheWithKey:(NSString *)aKey;
+@end
+
 #endif /* JLWebImageContact_h */

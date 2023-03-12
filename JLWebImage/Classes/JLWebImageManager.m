@@ -12,19 +12,7 @@
 #import "JLWebImageOperation.h"
 
 @interface JLWebImageManager ()
-/**
- 内存缓存的图片
- */
-@property (nonatomic, strong) NSMutableDictionary *images;
-/**
- 所有的操作对象
- */
-@property (nonatomic, strong) NSMutableDictionary *operations;
-/**
- 队列对象
- */
-@property (nonatomic, strong) NSOperationQueue *queue;
-@property(nonatomic, strong) dispatch_queue_t operationQueue;
+
 @end
 
 @implementation JLWebImageManager
@@ -35,107 +23,50 @@ JLSingletonM(WebImageManager)
 {
     self = [super init];
     if (self) {
-        _operationQueue = dispatch_queue_create("com.operation.safequeue", DISPATCH_QUEUE_CONCURRENT);
-        _operations = [NSMutableDictionary dictionary];
-        _queue = [[NSOperationQueue alloc] init];
         [self setupAppLifecycleNotification];
     }
     return self;
 }
 
 - (void)setImageView:(id<JLWebImageViewInterface>)imageView url:(NSString *)url placeholderImage:(NSString *)placeholderImage{
+    
+    NSAssert(imageView != nil, @"imageView is nil!");
+    NSAssert(url != nil, @"url is nil!");
+    NSAssert(self.memory != nil, @"memory is nil!");
+    NSAssert(self.disk != nil, @"disk is nil!");
+    NSAssert(self.downloader != nil, @"downloader is nil!");
+    
     // 1.0 如果此imageView正在下载图片就取消
-    NSString *loadingURL = nil;
-    if ([imageView respondsToSelector:@selector(cb_getLoadingURL)] && imageView) {
-        loadingURL = [imageView cb_getLoadingURL];
-    }
+    NSString *loadingURL = [imageView cb_getLoadingURL];;
     if (loadingURL) {
-        NSOperation *operation = [self getOperationCacheWithKey:loadingURL];
-        [operation cancel];
+        NSOperation *operation = [self.downloader getOperationCacheWithKey:loadingURL];
+        if (operation && !operation.isCancelled) {
+            [operation cancel];
+        }
     }
     
     // 2.0 先从内存缓存中取出图片
-    UIImage *memoryImage = nil;
-    if (self.memory) {
-        memoryImage = [self.memory getImageCacheWithKey:url];
-    }
+    UIImage *memoryImage = [self.memory getImageCacheWithKey:url];;
     
     if (memoryImage) {
-        if (imageView && [imageView respondsToSelector:@selector(cb_setImage:)]) {
-            [imageView cb_setImage:memoryImage];
-        }
-        
+        [imageView cb_setImage:memoryImage];
     }else{
-        UIImage *diskImage = nil;
-        if (self.disk) {
-            diskImage = [self.disk getDiskCacheWithURL:url];
-        }
+        UIImage *diskImage = [self.disk getDiskCacheWithURL:url];
         
         if (diskImage) { //2.2.4.1 直接利用沙盒中图片
-            if (imageView && [imageView respondsToSelector:@selector(cb_setImage:)]) {
-                [imageView cb_setImage:diskImage];
-            }
-            if (self.memory) {
-                [self.memory setupImageCache:diskImage withKey:url];
-            }
+            [imageView cb_setImage:diskImage];
+            [self.memory setupImageCache:diskImage withKey:url];
         }else { //2.2.4.2  下载图片
-    
-            if (imageView && [imageView respondsToSelector:@selector(cb_setImage:)]) {
+            
+            //下载图片前设置默认图片等待
+            if (placeholderImage) {
                 [imageView cb_setImage:[UIImage imageNamed:placeholderImage]];
             }
-            JLWebImageOperation *operation = [self getOperationCacheWithKey:url];
-            
-            if (operation == nil) { // 这张图片暂时没有下载任务
-                
-                //a. 正在下载这张图片
-                if (imageView && [imageView respondsToSelector:@selector(cb_setLoadingURL:)]) {
-                    [imageView cb_setLoadingURL:url];
-                }
-                
-                //b. 创建下载任务
-                operation = [[JLWebImageOperation alloc] init];
-                operation.url = url;
-                operation.img = imageView;
-                
-                //c. 添加到队列中
-                [self addOperationToQueue:operation];
-                //d. 存放到字典中
-                [self setOperationCacheWithKey:operation withKey:url];
-                
-            }
-        
+            [self.downloader downloadImage:imageView url:url];
         }
         
     }
 }
-
-- (void)addOperationToQueue:(NSOperation *)aOperation{
-    [self.queue addOperation:aOperation];
-}
-
-- (void)setOperationCacheWithKey:(NSOperation *)aOperation withKey:(NSString *)aKey{
-    if (!aKey) return;
-    dispatch_barrier_async(_operationQueue, ^{
-        self.operations[aKey] = aOperation;
-    });
-}
-
-- (NSOperation *)getOperationCacheWithKey:(NSString *)aKey{
-    __block NSOperation *operation = nil;
-    if (!aKey) return operation;
-    dispatch_sync(_operationQueue, ^{
-        operation = self.operations[aKey];
-    });
-    return operation;
-}
-
-- (void)removeOperationCacheWithKey:(NSString *)aKey{
-    if(!aKey) return;
-    dispatch_sync(_operationQueue, ^{
-        [self.operations removeObjectForKey:aKey];
-    });
-}
-
 
 - (void)clearMemories{
     if (self.memory) {
